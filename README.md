@@ -86,3 +86,67 @@ Created-By: 17.0.7 (Eclipse Adoptium)
 ```
 
 When we are building Java with Maven; Maven would be doing all of this for us. Building `.class` files from `.java` files, making the JAR files, and asking us what we want in the `MANIFEST.MF` file.
+
+
+### Using 3rd party JARs with Java in the CLI
+
+We are going to use Apache Commons Lang ([link](https://commons.apache.org/proper/commons-lang/)) as the 3rd party JAR. 
+
+Step 1: Download the Apache Commons Lang JAR (from [here](https://commons.apache.org/proper/commons-lang/download_lang.cgi)). I am using Apache Commons Lang 3.12.0 (Java 8+) with Java 17. You can use any depending on the supported Java verison. 
+
+Step 2: Make your directory look like below:
+```console
+% ls
+HelloWorld.java	lib
+
+% ls lib
+commons-lang3-3.12.0.jar
+```
+
+Step 3: `HelloWorld.java` should look like below:
+
+```java
+import org.apache.commons.lang3.StringUtils;
+
+public class HelloWorld {
+        public static void main(String[] args) {
+                System.out.println("Hello World!");
+                System.out.println(StringUtils.capitalize("hello apache!"));
+        }
+}
+```
+
+Step 4: Compile with the 3rd party library. Refer [1](#refer1)
+
+```console
+% javac -classpath ./lib/* HelloWorld.java
+```
+
+OR 
+
+```console
+% javac -cp lib/* HelloWorld.java
+```
+
+Step 5: See what the previous step created.
+
+```console
+% ls
+HelloWorld.class	HelloWorld.java		lib
+```
+
+Step 6: Run
+
+```console
+% java -cp ":./lib/*" HelloWorld
+Hello World!
+Hello apache!
+```
+
+This is how we have to manually manage the dependencies. If we use Maven, these dependencies will be managed for us. Depency management would be done by Maven. 
+
+References:
+
+---
+
+<a name="refer1">[1]</a> javac - http://web.mit.edu/java_v1.1.6/www/tools/javac.html
